@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naija Whot</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap">
+<style>
+:root{--felt:#0f5a36;--felt2:#0b4528;--ink:#f6f1e4;--muted:#b9d6c3;--gold:#f2b705;--panel:#fffaf0;--pink:#1d2b22;--w:clamp(50px,13.5vw,74px);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--felt:#0a3a24;--felt2:#06281a;--muted:#8fb39d;color-scheme:dark}}
+:root[data-theme="dark"]{--felt:#0a3a24;--felt2:#06281a;--muted:#8fb39d;color-scheme:dark}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(ellipse at 50% 40%,var(--felt),var(--felt2));color:var(--ink);font-family:"Bricolage Grotesque",system-ui,sans-serif;display:flex;flex-direction:column;max-width:100%;overflow-x:hidden}
+button{font:inherit;color:inherit}
+header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;gap:8px;flex-wrap:wrap}
+h1{font-size:1.5rem;font-weight:800;margin:0;letter-spacing:-.02em}
+.sm{font-size:.85rem;color:var(--muted)}
+.ghost{background:#0003;border:2px solid var(--muted);border-radius:10px;padding:6px 12px;cursor:pointer}
+main{flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:0 8px 8px;min-height:0}
+#chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:2px 6px}
+.chip{background:#0004;border:2px solid transparent;border-radius:999px;padding:3px 12px;font-size:.85rem}
+.chip.cur{border-color:var(--gold);font-weight:800}
+.chip.bump{animation:bump .4s}
+@keyframes bump{40%{transform:scale(1.18)}}
+.card{width:var(--w);aspect-ratio:2/3;border-radius:10px;background:linear-gradient(160deg,#fffdf6,#e9dfc5);border:0;padding:0;position:relative;flex:none;color:#222;
+transform:translateY(var(--y,0)) rotate(var(--r,0deg));transform-origin:50% 120%;box-shadow:0 1px 0 #d3c9ae,0 2px 0 #c7bca0,0 6px 10px #0007;transition:transform .18s,box-shadow .18s}
+.card.back{background:repeating-linear-gradient(45deg,#c0302a 0 6px,#8f1c16 6px 12px);border:3px solid #fffaf0;box-shadow:0 2px 0 #7e1914,0 4px 0 #6d140f,0 8px 12px #0008}
+.card.back::after{content:"WHOT";position:absolute;inset:38% 6%;display:flex;align-items:center;justify-content:center;background:#5a0f0b;color:var(--gold);border-radius:50%;font-weight:800;font-size:calc(var(--w)*.17);letter-spacing:.04em}
+.face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.face::before{content:"";position:absolute;inset:4px;border:1.5px solid currentColor;border-radius:7px;opacity:.3}
+.face i{position:absolute;top:6px;left:8px;font-style:normal;font-weight:800;font-size:calc(var(--w)*.25);line-height:1}
+.face i.r{top:auto;left:auto;bottom:6px;right:8px;transform:rotate(180deg)}
+.face svg{width:56%;filter:drop-shadow(0 2px 1.5px #0006)}
+.whot{flex-direction:column;color:#b3261e;background:radial-gradient(circle at 50% 40%,#fff6d6,transparent 70%)}
+.whot b{font-size:calc(var(--w)*.42);line-height:1}.whot span{font-size:calc(var(--w)*.19);font-weight:800;letter-spacing:.05em}
+#playerWrap{perspective:800px}
+#player{display:flex;justify-content:center;padding:26px 4px 10px;min-height:calc(var(--w)*1.5)}
+#player button.card{cursor:pointer;opacity:.7}
+#player .card.ok{opacity:1;transform:translateY(calc(var(--y,0px) - 16px)) rotate(var(--r,0deg));box-shadow:0 0 0 3px var(--gold),0 8px 12px #0008}
+#player .card.ok:hover{transform:translateY(calc(var(--y,0px) - 28px)) rotate(var(--r,0deg)) rotateX(10deg) scale(1.07)}
+.deal{animation:dealIn .45s cubic-bezier(.2,.8,.3,1) backwards}
+@keyframes dealIn{from{transform:translateY(-220px) rotate(-14deg) scale(.6);opacity:0}}
+.nope{animation:nope .3s}
+@keyframes nope{25%{translate:-6px}75%{translate:6px}}
+#table{display:flex;gap:26px;justify-content:center;align-items:center;padding:10px}
+#market{cursor:pointer;position:relative}
+#market.hint{box-shadow:0 0 0 3px var(--gold),0 8px 12px #0008}
+#market em{position:absolute;inset:auto 0 6px;text-align:center;color:#fff;font-style:normal;font-weight:800;font-size:.8rem;z-index:1}
+#pile{position:relative;width:var(--w);aspect-ratio:2/3}
+.pc{position:absolute;left:0;top:0}
+.land{animation:land .35s ease-out}
+@keyframes land{from{transform:scale(1.35) rotate(var(--r,0deg));opacity:.6}}
+.fly{position:fixed;margin:0;z-index:9;pointer-events:none;transform:none;transition:transform .4s cubic-bezier(.2,.7,.3,1)}
+.badge{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.8rem;color:var(--gold);font-weight:800}
+#status{text-align:center;min-height:2.6em;padding:0 12px;margin-top:10px}
+#status strong{color:var(--gold)}
+#plabel{text-align:center;font-size:.85rem;color:var(--muted)}
+details{font-size:.8rem;color:var(--muted);text-align:center;padding:0 12px 4px}
+details p{margin:4px auto;max-width:520px;text-align:left}
+.pick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pick button{width:52px;height:52px;border-radius:12px;border:2px solid #ddd;background:#fff;cursor:pointer}
+.pick svg{width:30px}
+#msg1{color:var(--muted);font-size:.9rem;min-height:1.3em}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.deal,.land,.nope,.bump{animation:none}.fly,.card{transition:none}}
+</style>
+<link rel="stylesheet" href="/shared.css">
+</head>
+<body>
+<header><h1>Naija Whot</h1><div><span class="sm" id="score"></span> <button class="ghost" id="sndBtn">Sounds</button> <button class="ghost" id="leaveTop">Leave</button> <a class="ghost" href="/" style="text-decoration:none;color:inherit">Menu</a></div></header>
+<main>
+<section><div id="chips"></div><div id="chance"></div>
+<div id="table"><button class="card back" id="market" aria-label="Pick from the market"><em id="mcount"></em></button><div id="pile"></div></div></section>
+<div id="status" aria-live="polite"><div id="msg1"></div><div id="msg2"></div></div>
+<section><div id="plabel"></div><div id="playerWrap"><div id="player"></div></div></section>
+<details><summary>How to play</summary>
+<p>Match the top card by shape or number. Empty your hand first to win. Everyone plays from their own device.</p>
+<p><b>1</b> Hold on: play again. <b>2</b> Pick two. <b>5</b> Pick three. <b>8</b> Suspension: the next player misses a turn. <b>14</b> General market: everyone else picks one, you play again. <b>20</b> Whot: play any time and call a shape.</p>
+<p>Facing a 2 or a 5? Play the same number to pass the pick on, or pick the cards yourself.</p></details>
+</main>
+<div class="ov" id="shapeOv"><div class="box"><h2>Call a shape</h2><div class="pick" id="pick"></div></div></div>
+<script src="/shared.js"></script>
+<script>
+(function(){
+var $=W.$,esc=W.esc;
+var SH=['circle','triangle','cross','square','star'];
+var SVGP={circle:'<circle cx="10" cy="10" r="7.5"/>',triangle:'<polygon points="10,2.5 18.5,17.5 1.5,17.5"/>',cross:'<polygon points="7,2 13,2 13,7 18,7 18,13 13,13 13,18 7,18 7,13 2,13 2,7 7,7"/>',square:'<rect x="3" y="3" width="14" height="14" rx="1"/>',star:'<polygon points="10,1.5 12.6,7.3 19,7.8 14.1,12 15.7,18.3 10,15 4.3,18.3 5.9,12 1,7.8 7.4,7.3"/>'};
+var SC={circle:['#ff8a7d','#a3150f'],triangle:['#7db4ff','#0b3f96'],cross:['#7fd98a','#1b6b2a'],square:['#c78bee','#531474'],star:['#ffcf5c','#b36100']};
+var SET={circle:[1,2,3,4,5,7,8,10,11,12,13,14],triangle:[1,2,3,4,5,7,8,10,11,12,13,14],cross:[1,2,3,5,7,10,11,13,14],square:[1,2,3,5,7,10,11,13,14],star:[1,2,3,4,5,7,8]};
+var EV=[['pick','Pick two or pick three played','Pick two!'],['market','General market played','General market!'],['whot','Whot (20) played','Whot!'],['last','Someone reaches their last card','Last card!'],['win','Wins the game','Game over!']];
+var S=null,myHand=[],mySeat=-1,readyAt=0,flying=false,pileQ=[],ps=null,landed=false,fresh=0,bump=-1,pickCtx=null,lastRect=null,snd={},vOn=true,mute=false;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function enc(c){return c.s==='whot'?520:SH.indexOf(c.s)*100+c.n}
+function dec(k){return k>=500?{s:'whot',n:20}:{s:SH[Math.floor(k/100)],n:k%100}}
+function svgS(s){return '<svg viewBox="0 0 20 20" aria-hidden="true"><g fill="url(#g-'+s+')" stroke="'+SC[s][1]+'" stroke-width=".7">'+SVGP[s]+'</g></svg>'}
+function faceHTML(c){
+  if(c.s==='whot')return '<div class="face whot"><b>20</b><span>WHOT</span></div>';
+  return '<div class="face" style="color:'+SC[c.s][1]+'"><i>'+c.n+'</i>'+svgS(c.s)+'<i class="r">'+c.n+'</i></div>';
+}
+
+/* ---------- client side (everyone, host included) ---------- */
+function legal(c){var t=dec(S.top);if(S.pending>0)return c.n===t.n;return c.n===20||c.s===S.shape||c.n===t.n}
+function canAct(){return W.open()&&S&&!S.over&&mySeat>=0&&mySeat===S.turn&&!flying&&Date.now()>=readyAt}
+function chipRect(i){var e=$('chip'+i);return e?e.getBoundingClientRect():{left:innerWidth/2-30,top:60}}
+function fly(r1,c,cb){
+  var f=document.createElement('div');f.className='card fly';f.innerHTML=faceHTML(c);
+  f.style.left=r1.left+'px';f.style.top=r1.top+'px';document.body.appendChild(f);
+  var r2=$('pile').getBoundingClientRect();void f.offsetWidth;
+  f.style.transform='translate('+(r2.left-r1.left)+'px,'+(r2.top-r1.top)+'px) rotate('+(Math.random()*20-10)+'deg)';
+  setTimeout(function(){f.remove();cb()},420);
+}
+function setPile(d){pileQ.push({c:d.top,r:d.rot});if(pileQ.length>3)pileQ.shift();ps=d.shape;landed=true}
+function onState(d){
+  if(!d||!d.seats)return;
+  if(S&&d.seq<S.seq)return;
+  var isNew=!S||d.seq>S.seq;S=d;mySeat=d.me;
+  $('roomOv').classList.remove('on');$('startOv').classList.remove('on');
+  if(!isNew){render();return}
+  var l=d.last||{};readyAt=Date.now()+(l.d||0);
+  if(l.fx)W.fire(l.fx,l.say||'',l.sid);
+  if(l.t==='start'){myHand=[];$('endOv').classList.remove('on')}
+  if(l.t==='draw')bump=l.si;
+  if(l.t==='play'){
+    flying=true;var rect=(l.si===mySeat&&lastRect)?lastRect:chipRect(l.si);lastRect=null;
+    fly(rect,dec(l.c),function(){flying=false;setPile(d);render();checkEnd()});
+    render();
+  }else{setPile(d);render();checkEnd()}
+  setTimeout(render,(l.d||0)+40);
+}
+function onHands(d){
+  var nh=d.h.map(dec);
+  if(nh.length>myHand.length)fresh=nh.length-myHand.length;
+  myHand=nh;render();
+}
+function checkEnd(){if(!S||!S.over||flying)return;W.showEnd(S.win===mySeat?'You win!':S.seats[S.win].n+' wins!','',S.win===mySeat)}
+function render(){
+  if(!S)return;
+  var h='';S.seats.forEach(function(s,i){h+='<div class="chip'+(i===S.turn&&!S.over?' cur':'')+(bump===i?' bump':'')+'" id="chip'+i+'"><b>'+esc(s.n)+(i===mySeat?' (you)':'')+'</b> · '+s.c+(s.w?' · '+s.w+' win'+(s.w>1?'s':''):'')+'</div>'});
+  $('chips').innerHTML=h;bump=-1;
+  var pcw=W.chance(S.seats.map(function(s){var c=Math.max(s.c,1);return 1/(c*c)}));
+  W.bars('chance',S.seats.map(function(s,i){return{n:s.n+(i===mySeat?' (you)':''),p:pcw[i],c:['#f2b705','#7db4ff','#7fd98a','#c78bee'][i%4],t:s.c+' cards left'}}));
+  var pl=$('player');pl.innerHTML='';
+  $('plabel').textContent=mySeat>=0?'Your cards':'You are watching this game';
+  var can=canAct(),n=myHand.length,any=false,w=Math.max(50,Math.min(74,innerWidth*.135)),step=Math.min(w*.9,(innerWidth-24-w)/Math.max(1,n-1)),mg=(step-w)/2,mid=(n-1)/2,rsA=Math.min(5,36/Math.max(n,1));
+  myHand.forEach(function(c,i){
+    var b=document.createElement('button');b.className='card';
+    b.style.margin='0 '+mg+'px';b.style.setProperty('--r',((i-mid)*rsA)+'deg');b.style.setProperty('--y',(Math.pow(i-mid,2)*(n>8?.8:1.5))+'px');
+    b.innerHTML=faceHTML(c);b.setAttribute('aria-label',c.s==='whot'?'Whot 20':c.n+' of '+c.s);
+    if(can&&legal(c)){b.classList.add('ok');any=true}
+    if(i>=n-fresh){b.classList.add('deal');b.style.animationDelay=(i-(n-fresh))*70+'ms'}
+    b.onclick=function(){onCard(i,b)};
+    pl.appendChild(b);
+  });
+  fresh=0;$('market').classList.toggle('hint',can&&!any);
+  var ph='';
+  pileQ.forEach(function(x,j){ph+='<div class="card pc'+(j===pileQ.length-1&&landed?' land':'')+'" style="--r:'+x.r+'deg">'+faceHTML(dec(x.c))+'</div>'});
+  var tc=pileQ.length?dec(pileQ[pileQ.length-1].c):null;
+  if(tc&&(tc.s==='whot'||ps!==tc.s))ph+='<div class="badge">Shape: '+ps+'</div>';
+  $('pile').innerHTML=ph;landed=false;$('mcount').textContent=S.mk;
+  $('msg1').textContent=S.msg||'';
+  var cur=S.seats[S.turn],t=dec(S.top),p2='';
+  if(!S.over)p2=mySeat===S.turn?(S.pending?'<strong>Your turn.</strong> Play a '+t.n+' to pass it on, or tap the market to pick '+S.pending+'.':'<strong>Your turn.</strong> Match the shape or number.'):'<strong>'+esc(cur.n)+'</strong>’s turn…';
+  $('msg2').innerHTML=p2;
+}
+function onCard(i,b){
+  if(!canAct())return;
+  var c=myHand[i];
+  if(!legal(c)){
+    $('msg1').textContent=S.pending?'Defend with a '+dec(S.top).n+' or pick '+S.pending+' from the market.':'That card doesn’t match. Try another or pick from the market.';
+    b.classList.remove('nope');void b.offsetWidth;b.classList.add('nope');return;
+  }
+  var rect=b.getBoundingClientRect();
+  if(c.n===20){pickCtx={i:i,rect:rect};showPick();return}
+  lastRect=rect;readyAt=Date.now()+1500;W.send({t:'play',i:i});
+}
+function showPick(){
+  var h='';SH.forEach(function(s){h+='<button data-s="'+s+'" aria-label="'+s+'">'+svgS(s)+'</button>'});
+  $('pick').innerHTML=h;
+  Array.prototype.forEach.call($('pick').children,function(b){b.onclick=function(){$('shapeOv').classList.remove('on');lastRect=pickCtx.rect;readyAt=Date.now()+1500;W.send({t:'play',i:pickCtx.i,sh:b.getAttribute('data-s')})}});
+  $('shapeOv').classList.add('on');
+}
+$('market').onclick=function(){if(canAct()){readyAt=Date.now()+1200;W.send({t:'draw'})}};
+
+/* ---------- start ---------- */
+var dh='';SH.forEach(function(sh){dh+='<linearGradient id="g-'+sh+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+SC[sh][0]+'"/><stop offset="1" stop-color="'+SC[sh][1]+'"/></linearGradient>'});
+document.body.insertAdjacentHTML('afterbegin','<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>'+dh+'</defs></svg>');
+function reset(){
+  S=null;myHand=[];mySeat=-1;pileQ=[];flying=false;readyAt=0;
+  ['plabel','msg1','msg2','score'].forEach(function(id){$(id).textContent=''});
+  ['chips','chance','player','pile'].forEach(function(id){$(id).innerHTML=''});
+}
+W.init({game:'whot',title:'Naija Whot',ev:EV,onState:onState,onHand:onHands,inGame:function(){return !!S},reset:reset});
+})();
+</script>
+</body>
+</html>

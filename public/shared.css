@@ -1,0 +1,32 @@
+.ov{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;z-index:12;padding:16px}
+.ov.on{display:flex}
+.box{background:#fffaf0;color:#1d2b22;border-radius:18px;padding:20px;text-align:center;max-width:340px;width:100%;box-sizing:border-box;max-height:92vh;overflow:auto;font-family:"Bricolage Grotesque",system-ui,sans-serif}
+.box h2{margin:0 0 8px;font-size:1.3rem}.box p{margin:0 0 12px;color:#5b6b5f}
+.sm2{font-size:.85rem;color:#5b6b5f;margin:12px 0 6px}
+.fld{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:2px solid #b9b19a;background:#fff;color:#1d2b22;font:inherit;margin-bottom:10px}
+.row2{display:flex;gap:8px;align-items:center}.row2 .fld{margin:0}
+.srow,.opt{display:flex;gap:8px;align-items:center;margin:9px 0;text-align:left;font-size:.9rem}
+.srow span{flex:1}.srow small{color:#5b6b5f}
+.box .ghost{background:#fff;color:#1d2b22;border:2px solid #8a8470;border-radius:10px;padding:6px 12px;cursor:pointer;font:inherit}
+.srow .ghost{padding:3px 8px;font-size:.8rem}
+.sel{max-width:150px;border-radius:8px;border:2px solid #b9b19a;background:#fff;color:#1d2b22;padding:5px;font:inherit;font-size:.8rem}
+.go2{background:#f2b705;color:#1d2b22;border:0;border-radius:12px;padding:11px 20px;font-weight:800;cursor:pointer;width:100%;margin-top:6px;font:inherit;font-weight:800}
+.go2:disabled,.ghost:disabled{opacity:.5;cursor:default}
+
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:20}
+.trophy svg{width:76px;height:76px;animation:tro .9s cubic-bezier(.2,.9,.3,1.3)}
+.trophy.me svg{animation:tro .9s cubic-bezier(.2,.9,.3,1.3),glow 1.2s ease-in-out .9s infinite alternate}
+@keyframes tro{0%{transform:scale(.2) rotate(-25deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes glow{to{filter:drop-shadow(0 0 10px #f2b705)}}
+#chance{max-width:440px;margin:2px auto 6px;padding:0 12px;box-sizing:border-box;width:100%}
+.cbt{font-size:.72rem;opacity:.7;text-align:center;margin-bottom:2px}
+.cb{display:flex;align-items:center;gap:8px;font-size:.8rem;margin:3px 0}
+.cb .cn{width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cb .bar{flex:1;height:10px;border-radius:6px;background:#0003;overflow:hidden}
+.cb .bar i{display:block;height:100%;border-radius:6px;transition:width .6s ease}
+.cb b{width:38px;text-align:right}
+@media (prefers-reduced-motion:reduce){.trophy svg,.trophy.me svg{animation:none}.cb .bar i{transition:none}}
+
+.dsel{display:flex;gap:6px;align-items:center;justify-content:center;margin:8px 0;font-size:.9rem}
+.dsel .ghost{padding:4px 10px}
+.box .dsel .ghost.on{background:#f2b705;border-color:#b36100;font-weight:800}
