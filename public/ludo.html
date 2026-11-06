@@ -71,11 +71,12 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 </head>
 <body>
 <div id="app">
-<header><h1>Naija Ludo</h1><div><span class="sm" id="score"></span> <button class="ghost" id="sndBtn">Sounds</button> <button class="ghost" id="leaveTop">Leave</button> <a class="ghost" href="/">Menu</a></div></header>
+<header><h1>Naija Ludo</h1><div><span class="sm" id="score"></span> <button class="ghost" id="sndBtn">Sounds</button> <button class="ghost" type="button" data-feedback>Feedback</button> <button class="ghost" id="leaveTop">Leave</button> <a class="ghost" href="/">Menu</a></div></header>
 <div id="bw"><svg id="board" viewBox="0 0 15 15" role="img" aria-label="Ludo board"></svg></div>
 <div id="side">
 <div id="chips"></div>
 <div id="ctl"><div id="diceRow"></div><div id="msg" aria-live="polite"><div id="msg1"></div><div id="msg2"></div></div></div>
+<div id="turnTimer" class="turnTimer" hidden></div>
 <details><summary>How to play</summary>
 <p>Roll a 6 to bring a pawn out. Move clockwise around the board, then up your own coloured lane to the centre. You need the exact roll to finish.</p>
 <p>Land on an opponent’s pawn to send it back to its yard. Pawns on a star or a start square are safe. A 6, a capture or reaching the centre gives you another roll. Three 6s in a row lose your turn.</p>
@@ -97,7 +98,7 @@ run(1,6,1,0,5);run(6,5,0,-1,6);run(7,0,1,0,2);run(8,1,0,1,5);run(9,6,1,0,6);run(
 run(13,8,-1,0,5);run(8,9,0,1,6);run(7,14,-1,0,2);run(6,13,0,-1,5);run(5,8,-1,0,6);run(0,7,0,-1,2);
 var NS='http://www.w3.org/2000/svg';
 var brd=$('board'),seats=[],tok={},pawns={},S=null,mySeat=-1,readyAt=0,busy=false,canPick=false,canRoll=false,selDie=0;
-var EV=[['six','Rolls a six','Six!'],['sent','Gets sent back to the yard','Pawn captured!'],['home','Gets a pawn home','Pawn home!'],['win','Wins the game','Game over!']];
+var EV=[['six','Rolls a six','Six!'],['sent','Gets sent back to the yard','Pawn captured!'],['home','Gets a pawn home','Pawn home!'],['win','Wins the game','Game over!'],['turn','It becomes my turn','Your turn']];
 var PIPS={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
 var FACE={1:'rotateX(0deg)',2:'rotateX(-90deg)',3:'rotateY(-90deg)',4:'rotateY(90deg)',5:'rotateX(90deg)',6:'rotateY(180deg)'};
 function el(tag,at,parent){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);(parent||brd).appendChild(e);return e}

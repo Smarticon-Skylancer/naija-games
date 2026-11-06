@@ -68,11 +68,12 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 <link rel="stylesheet" href="/shared.css">
 </head>
 <body>
-<header><h1>Naija Whot</h1><div><span class="sm" id="score"></span> <button class="ghost" id="sndBtn">Sounds</button> <button class="ghost" id="leaveTop">Leave</button> <a class="ghost" href="/" style="text-decoration:none;color:inherit">Menu</a></div></header>
+<header><h1>Naija Whot</h1><div><span class="sm" id="score"></span> <button class="ghost" id="sndBtn">Sounds</button> <button class="ghost" type="button" data-feedback>Feedback</button> <button class="ghost" id="leaveTop">Leave</button> <a class="ghost" href="/" style="text-decoration:none;color:inherit">Menu</a></div></header>
 <main>
 <section><div id="chips"></div><div id="chance"></div>
 <div id="table"><button class="card back" id="market" aria-label="Pick from the market"><em id="mcount"></em></button><div id="pile"></div></div></section>
 <div id="status" aria-live="polite"><div id="msg1"></div><div id="msg2"></div></div>
+<div id="turnTimer" class="turnTimer" hidden></div>
 <section><div id="plabel"></div><div id="playerWrap"><div id="player"></div></div></section>
 <details><summary>How to play</summary>
 <p>Match the top card by shape or number. Empty your hand first to win. Everyone plays from their own device.</p>
@@ -88,7 +89,7 @@ var SH=['circle','triangle','cross','square','star'];
 var SVGP={circle:'<circle cx="10" cy="10" r="7.5"/>',triangle:'<polygon points="10,2.5 18.5,17.5 1.5,17.5"/>',cross:'<polygon points="7,2 13,2 13,7 18,7 18,13 13,13 13,18 7,18 7,13 2,13 2,7 7,7"/>',square:'<rect x="3" y="3" width="14" height="14" rx="1"/>',star:'<polygon points="10,1.5 12.6,7.3 19,7.8 14.1,12 15.7,18.3 10,15 4.3,18.3 5.9,12 1,7.8 7.4,7.3"/>'};
 var SC={circle:['#ff8a7d','#a3150f'],triangle:['#7db4ff','#0b3f96'],cross:['#7fd98a','#1b6b2a'],square:['#c78bee','#531474'],star:['#ffcf5c','#b36100']};
 var SET={circle:[1,2,3,4,5,7,8,10,11,12,13,14],triangle:[1,2,3,4,5,7,8,10,11,12,13,14],cross:[1,2,3,5,7,10,11,13,14],square:[1,2,3,5,7,10,11,13,14],star:[1,2,3,4,5,7,8]};
-var EV=[['pick','Pick two or pick three played','Pick two!'],['market','General market played','General market!'],['whot','Whot (20) played','Whot!'],['last','Someone reaches their last card','Last card!'],['win','Wins the game','Game over!']];
+var EV=[['pick','Pick two or pick three played','Pick two!'],['market','General market played','General market!'],['whot','Whot (20) played','Whot!'],['last','Someone reaches their last card','Last card!'],['win','Wins the game','Game over!'],['turn','It becomes my turn','Your turn']];
 var S=null,myHand=[],mySeat=-1,readyAt=0,flying=false,pileQ=[],ps=null,landed=false,fresh=0,bump=-1,pickCtx=null,lastRect=null,snd={},vOn=true,mute=false;
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
 function enc(c){return c.s==='whot'?520:SH.indexOf(c.s)*100+c.n}

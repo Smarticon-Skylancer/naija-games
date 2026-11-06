@@ -23,6 +23,19 @@ For phones on the same Wi-Fi, open http://YOUR-COMPUTER-IP:3000.
 
 Free hosts sleep when nobody is using them, so the first load can take about a minute. Choose the server region closest to your players.
 
+## Database, feedback and admin dashboard
+For persistent feedback and daily statistics, create a free Postgres database with a hosted provider such as Supabase or Neon. Create a project/database, copy its Postgres connection string, and add these environment variables in the Render service's **Environment** settings:
+
+- `DATABASE_URL`: the provider's Postgres connection string. The server uses SSL and creates the required tables and indexes on startup.
+- `ADMIN_KEY`: a long, randomly generated secret with at least 16 characters. Keep it private; do not put it in source control or share it with players.
+
+Open `https://YOUR-RENDER-SERVICE.onrender.com/admin` and authenticate with any username and the `ADMIN_KEY` as the password. The dashboard updates while its tab is visible and includes CSV downloads and administrative controls. If `ADMIN_KEY` is missing or shorter than 16 characters, `/admin` returns 404.
+
+Without `DATABASE_URL`, the app logs one warning and stores feedback and player records as JSON Lines in `./data/`. Daily statistics are only kept in memory in this mode. Render's free filesystem is ephemeral, so fallback files are lost when the service restarts or is redeployed. Live counters are always in memory; sleeping or restarting resets them, while daily statistics already flushed to Postgres remain available.
+
+### Privacy
+Feedback stores the submitted username, six ratings, voice-chat answer, optional comment, game, device category, measured round-trip time, app version and anonymous client ID. The `players` table stores the anonymous client ID, username, first/last-seen times and games played. No IP addresses, hands or dice are stored in the database or exposed by the admin API. An administrator can honor a data-deletion request using the anonymous client ID in the dashboard's **Delete player and feedback** control; this removes that player's `players` row and feedback rows.
+
 ## Sound library
 Each folder in `public/sounds/` is a pack. Drop a `.wav`, `.mp3` or `.ogg` file in (3 seconds or less, file names with letters, numbers, - and _ only) and it shows up in every player's sound picker. No code change or restart needed.
 Add `pack.json` to a folder to name it: `{"title":"Pack name","explicit":true}`. Explicit packs are hidden for players who turn on clean mode.
@@ -36,5 +49,6 @@ The Ludo board fills the width of a phone held upright and the full height on a 
 ## Notes
 - Games live in the server's memory. Restarting the server ends all games.
 - A player who loses connection has 45 seconds to come back (the page reconnects by itself). After that a computer takes their seat.
-- In Ludo, a player who does nothing for 60 seconds is moved automatically.
+- Human turns have a 30-second timer by default. Set `TURN_MS` (milliseconds, default `30000`) to change it, and `MAX_MISSED` (default `1`) to choose how many missed turns are allowed before a player is replaced by a computer. Ludo starts a separate timer for rolling and for choosing a move.
+- Room chat keeps the latest 50 messages in memory and restores them when a player rejoins.
 - Room codes are 4 characters. Up to 4 players per room, computers included.
